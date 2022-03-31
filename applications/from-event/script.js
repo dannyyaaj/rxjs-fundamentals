@@ -1,6 +1,7 @@
 import { fromEvent } from 'rxjs';
 
-const button = document.getElementById('create-notification');
+const addMessageButton = document.getElementById('create-notification');
+const deleteMessageButton = document.getElementById('delete-notification');
 const notificationMessages = document.getElementById('notification-messages');
 
 const createNotificationElement = () => {
@@ -14,6 +15,13 @@ const addMessageToDOM = () => {
   notificationMessages.appendChild(notification);
 };
 
+const deleteMessageFromDom = () => {
+  const element = document.querySelector('article');
+  if (element) {
+    notificationMessages.removeChild(element);
+  }
+}
+
 /**
  * Your mission:
  *
@@ -22,3 +30,13 @@ const addMessageToDOM = () => {
  * - Use `addMessageToDOM` to add a useless message to the DOM whenever the
  *   stream emits a value.
  */
+
+const buttonClicks$ = fromEvent(addMessageButton, 'click');
+
+buttonClicks$.subscribe(addMessageToDOM);
+buttonClicks$.subscribe((e) => console.log(e))
+
+const deleteButtonClicks$ = fromEvent(deleteMessageButton, 'click');
+
+deleteButtonClicks$.subscribe(deleteMessageFromDom)
+deleteButtonClicks$.subscribe((e) => console.log(e))
