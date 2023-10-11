@@ -15,5 +15,10 @@ const pause$ = fromEvent(pauseButton, 'click').pipe(mapTo(false))
 //give it default value of false before anything is emitted
 const isRunning$ = merge(start$, pause$).pipe(startWith(false))
 
-isRunning$.subscribe((value) => { console.log('is running', value) })
+isRunning$.subscribe(setStatus)
 
+const first$ = interval(1000).pipe(map(labelWith('First')), take(4));
+const second$ = interval(1000).pipe(map(labelWith('Second')), take(4));
+const combined$ = merge(first$, second$)
+
+bootstrap({ first$, second$, combined$ })
