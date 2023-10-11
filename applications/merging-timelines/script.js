@@ -1,5 +1,5 @@
-import { fromEvent, merge, interval, concat, race, forkJoin } from 'rxjs';
-import { mapTo, startWith, take, map } from 'rxjs/operators';
+import { fromEvent, merge, interval, concat, race, forkJoin, combineLatest } from 'rxjs';
+import { mapTo, startWith, take, map, tap, combineLatestWith } from 'rxjs/operators';
 import {
   labelWith,
   startButton,
@@ -19,6 +19,7 @@ isRunning$.subscribe(setStatus)
 
 const first$ = interval(1000).pipe(map(labelWith('First')), take(4));
 const second$ = interval(1000).pipe(map(labelWith('Second')), take(4));
-const combined$ = merge(first$, second$)
+// const combined$ = combineLatest(first$, second$).pipe(tap(([first, second]) => console.log(first, second)))
+const combined$ = first$.pipe(combineLatestWith(second$), tap(([first, second]) => console.log(first, second)))
 
 bootstrap({ first$, second$, combined$ })
