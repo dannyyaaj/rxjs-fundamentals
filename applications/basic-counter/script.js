@@ -15,6 +15,7 @@ const counter$ = merge(start$, pause$).pipe(
       return NEVER;
     }
   }),
+  //will take current counter and increment, instead of always starting back at 0
   scan((total) => total + 1, 0)
 )
 
