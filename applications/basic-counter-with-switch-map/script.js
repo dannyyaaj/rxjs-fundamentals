@@ -6,10 +6,14 @@ const start$ = fromEvent(startButton, 'click').pipe(mapTo(true));
 const pause$ = fromEvent(pauseButton, 'click').pipe(mapTo(false));
 
 const counter$ = merge(start$, pause$).pipe(
-  switchMap((isRunning) => {
-    return isRunning ? interval(1000) : NEVER;
+  switchMap((shouldIBeRunning) => {
+    if (shouldIBeRunning) {
+      return interval(1000)
+    } else {
+      return NEVER;
+    }
   }),
-  scan((count) => count + 1, 0),
+  scan((total) => total + 1, 0),
 );
 
 counter$.subscribe(setCount);
